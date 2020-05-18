@@ -11,5 +11,22 @@
   </parent>
 
   <artifactId>sample-jaxws-api</artifactId>
+  
+  <profiles>
+    <!-- JAX-WS is no longer included in JDK 11 and later -->
+    <profile>
+      <id>jaxws-runtime</id>
+      <activation>
+        <jdk>[11</jdk>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>com.sun.xml.ws</groupId>
+          <artifactId>rt</artifactId>
+          <version>2.3.3</version>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
 
 </project>
