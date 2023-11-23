@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
@@ -152,7 +153,7 @@ class DocumentTest {
         String output = marshal(object);
         ZonedDateTime value = object.getJavaDateTime();
         
-        assertEquals(input, output.replace(".000", "")); // TODO: format is not preserved
+        assertEquals(input, output.replace(".000", "")); // TODO: fraction is added
         assertEquals(2002, value.getYear());
         assertEquals(5, value.getMonthValue());
         assertEquals(30, value.getDayOfMonth());
@@ -161,6 +162,32 @@ class DocumentTest {
         assertEquals(10, value.getSecond());
         assertEquals(0, value.getNano());
         assertEquals(ZoneOffset.ofHours(6), value.getOffset());
+    }
+    
+    @Test
+    void roundTrip_javaDate_full() {
+        String input = "<document><javaDate>2002-05-30+06:00</javaDate></document>";
+        Document object = unmarshal(input);
+        String output = marshal(object);
+        LocalDate value = object.getJavaDate();
+        
+        assertEquals(input.replace("+06:00", ""), output); // TODO: zone is lost
+        assertEquals(2002, value.getYear());
+        assertEquals(5, value.getMonthValue());
+        assertEquals(30, value.getDayOfMonth());
+    }
+    
+    @Test
+    void roundTrip_javaDate_local() {
+        String input = "<document><javaDate>2002-05-30</javaDate></document>";
+        Document object = unmarshal(input);
+        String output = marshal(object);
+        LocalDate value = object.getJavaDate();
+        
+        assertEquals(input, output);
+        assertEquals(2002, value.getYear());
+        assertEquals(5, value.getMonthValue());
+        assertEquals(30, value.getDayOfMonth());
     }
     
     private Document unmarshal(String xml) {

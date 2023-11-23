@@ -1,5 +1,6 @@
 package com.github.phoswald.sample.jaxb;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -31,8 +32,13 @@ public class Document {
     
     @XmlElement
     @XmlSchemaType(name = "dateTime")
-    @XmlJavaTypeAdapter(ZonedDateTimeAdapter.class) // TODO can we make this optional?
+    @XmlJavaTypeAdapter(ZonedDateTimeXmlAdapter.class)
     protected ZonedDateTime javaDateTime;
+    
+    @XmlElement
+    @XmlSchemaType(name = "date")
+    @XmlJavaTypeAdapter(LocalDateXmlAdapter.class)
+    protected LocalDate javaDate;
 
     public String getString() {
         return string;
@@ -72,5 +78,13 @@ public class Document {
 
     public void setJavaDateTime(ZonedDateTime javaDateTime) {
         this.javaDateTime = javaDateTime;
+    }
+
+    public LocalDate getJavaDate() {
+        return javaDate;
+    }
+
+    public void setJavaDate(LocalDate javaDate) {
+        this.javaDate = javaDate;
     }
 }
