@@ -19,6 +19,7 @@
     <module>sample-jaxws-api</module>
     <module>sample-jaxws-server</module>
     <module>sample-jaxws-client</module>
+    <module>sample-jaxb</module>
   </modules>
 
 </project>
